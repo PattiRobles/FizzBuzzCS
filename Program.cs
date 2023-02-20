@@ -1,113 +1,64 @@
-﻿using System.Text.RegularExpressions;
-using System.Collections.Generic;
-internal class FizzBuzzProgram
-{
-	public static string CallFizzBuzz(int number) 
-	{
-		string answer = "";
-		
-		if (number % 3 == 0)
-		{
-			answer += "Fizz";
-		}
-		if (number % 5 == 0)
-		{
-			answer += "Buzz";
-		}
-		if (number % 7 == 0) 
-		{
-			answer += "Bang";	
-		}
+﻿Console.WriteLine("Please enter a maximum number.");
+int maxNumber = int.Parse(Console.ReadLine()!); 
 
-		if (number % 11 == 0) 
+Console.WriteLine("Please state which FizzBuzz logic you would like to apply. \nChoose from fizz, buzz, bang, fezz and bong. Type as many as you want to apply");
+string logicSelection = Console.ReadLine()!.Trim().ToLower();
+
+Dictionary<string, bool> fizzBuzzRules = new Dictionary<string, bool>()
+{
+	{"fizz", false},
+	{"buzz", false},
+	{"bang", false},
+	{"bong", false},
+	{"fezz", false},
+	{"reverse", false}
+	
+};
+
+foreach(KeyValuePair <string, bool> rule in fizzBuzzRules ) 
+{
+	fizzBuzzRules[rule.Key] = logicSelection.Contains(rule.Key);
+}
+
+for (int i = 1; i <= maxNumber; i++) 
+{
+	List<string> answer = new List<string>();
+		
+		if (i % 3 == 0 && fizzBuzzRules["fizz"])
 		{
-			answer = "Bong";
+			answer.Add("Fizz");
 		}
-		if (number % 13 == 0)
+		if (i % 5 == 0 && fizzBuzzRules["buzz"])
 		{
-			if (!answer.Contains('B')) 
+			answer.Add("Buzz");
+		}
+		if (i % 7 == 0 && fizzBuzzRules["bang"])
+		{
+			answer.Add("Bang");
+		}
+		if (i % 11 == 0 && fizzBuzzRules["bong"])
+		{
+			 answer.Clear();
+			 answer.Add("Bong");
+		}
+		if (i % 13 == 0 && fizzBuzzRules["fezz"])
+		{
+			if (!string.Join("", answer).Contains('B')) 
 			{
-				answer += "Fezz";
+				answer.Add("Fezz");
 			}
 			else 
 			{
-				answer = answer.Insert(answer.IndexOf("B"), "Fezz");
+				string joinedAnswer = string.Join("", answer);
+				int indexOfB = joinedAnswer.IndexOf('B');
+				string updatedFezzString = joinedAnswer.Insert(indexOfB, "Fezz"); // NOT WORKING
 			} 
 		}
-		if (number % 17 == 0)
+		if (i % 17 == 0 && fizzBuzzRules["reverse"])
 		{
-			String[] individualAnswers = Regex.Split(answer, "(?=[A-Z]+)");
-			answer = string.Join("", individualAnswers.Reverse());
-			//(?=...) patter in Regex called POSITIVE LOOKAHEAD ASSERTION
-			//allows you to match a regex pattern without consuming it - i.e. without the char matched desappearing
-			
+			answer.Reverse();
 		}
-		return answer;	
-	}
 
-	public static void Main(string[] args)
-	{
-		
-		int i = 1;
-		for (i = 1; i <= 255; i++)
-		{
-			string answer = CallFizzBuzz(i);
-
-			if (answer.Length > 0)
-			{
-				Console.WriteLine(answer);
-			}
-			else
-			{
-				Console.WriteLine(i);
-			}
-		}
-	}
+		Console.WriteLine(answer.Count > 0 ? string.Join("",answer) : i);
 }
 
-//Dictionary<string, bool> fizzBuzzApplied = new Dictionary<string, bool>(); - use it to let the user 
-//have a choice over which rules they wish to implement
-
-	// public static int AskUserInput(string input) {
-
-	// 	Console.WriteLine("Please enter a maximum iteration");
-	// 	string userInput = Console.ReadLine().Trim();
-
-	// 	while (userInput == "")  
-	// 	{
-	// 		Console.WriteLine("Please enter a valid numerical input");
-	// 		userInput = Console.ReadLine().Trim();
-	// 	} 
-
-		
-	// 	bool canParse = int.TryParse(userInput, out int maxIteration); 
-	// 	if (!canParse) 
-	// 	{
-	// 		Console.WriteLine("Please enter a valid numerical input");
-	// 	}
-	// 	else 
-	// 	{
-	// 		return maxIteration;
-	// 	}
-		
-	// }
-
-	//Dictionary
-	// Dictionary<int, string> fizzBuzzLogic = new Dictionary<int, string>()
-	// 	{
-	// 		{3, "Fizz"},
-	// 		{5, "Fizz"},
-	// 		{7, "Fizz"},
-	// 		{11, "Fizz"},
-	// 	};
-
-	// 	string answer = "";
-		
-	// 	foreach(int key in fizzBuzzLogic.Keys) 
-	// 	{
-	// 		if (number % key == 0) 
-	// 		{
-	// 			answer += fizzBuzzLogic.Values;
-	// 		}
-
-	// 	}

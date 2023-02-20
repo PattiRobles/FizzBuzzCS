@@ -1,0 +1,73 @@
+using System.Text.RegularExpressions;
+//asume user always wants to choose rules
+
+Dictionary<string, bool> fizzBuzzRules = new Dictionary<string, bool>()
+{
+	{"Fizz", false},
+	{"Buzz", false},
+	{"Bang", false},
+	{"Fezz", false},
+	{"Bong", false},
+};
+
+// this is a NULL-FORGIVING operator - ignores warning of potential null return
+//im sure this is not best practice - would have to expand code to ensure user input is valid
+Console.WriteLine("Please enter a maximum number.");
+int maxNumber = int.Parse(Console.ReadLine()!); 
+
+Console.WriteLine("Please state which FizzBuzz logic you would like to apply. Choose from fizz, buzz, bang, fezz and bong.");
+string logicSelection = Console.ReadLine()!.Trim().ToLower();
+
+//this code iterates through the fizzBuzzRules dictionary and updates the boolean value
+//based on whether the key  is contained in the 'logicSelection' list
+
+
+foreach(KeyValuePair <string, bool> rule in fizzBuzzRules ) 
+// this iterates over each KV pair in the dictionary
+//KeyValuePair<string, bool> is a c# structure representing a string+bool KV pair
+//rule is the name I have given to the variable currently eveluated in the loop
+{
+	fizzBuzzRules[rule.Key] = logicSelection.Contains(rule.Key);
+	//fizzBuzzRules[rule.Key] accesses the boolean associated with the current key being processed in the foreach loop
+	//logicSelection.Contains(rule.Key) checks is the list called logicSelection (our user input) contains the key processed in the loop
+	//Contains() is a method of List<T> class. It returns true is contained, false otherwise.
+	//this line of code asigns the result of Contains() method to the boolean value associated with the current key in the fizzbuzzrules dictionary
+	//curently evaluated in the for each loop
+}
+
+for (int i = 1; i <= maxNumber; i++) 
+{
+	List <string> answer = new List <string>();
+		
+		if (i % 3 == 0 && fizzBuzzRules["fizz"])
+		{
+			answer.Add("Fizz");
+		}
+		if (i % 5 == 0 && fizzBuzzRules["buzz"])
+		{
+			answer.Add("Buzz");
+		}
+		if (i % 7 == 0 && fizzBuzzRules["bang"])
+		{
+			answer.Add("Bang");
+		}
+		if (i % 11 == 0 && fizzBuzzRules["bong"])
+		{
+			 //answer = "Bong"; this doesnt work as cant convert from type string to type List<string>
+			 //therefore need to delete any list created so far and repopulate with Bong
+			 answer.Clear();
+			 answer.Add("Bong");
+
+		}
+
+		Console.WriteLine(answer);
+}
+
+
+// with simplw strings
+		if (number % 17 == 0)
+// 		{
+// 			String[] individualAnswers = Regex.Split(answer, "(?=[A-Z]+)");
+// 			answer = string.Join("", individualAnswers.Reverse());
+// 			//(?=...) patter in Regex called POSITIVE LOOKAHEAD ASSERTION
+// 			//allows you to match a regex pattern without consuming it - i.e. without the char matched desappearing
